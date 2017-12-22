@@ -7,14 +7,14 @@ function tree($categories)
 {
     $node = '';
     foreach ($categories as $category) {
-        $link = urlencode($category->link);
-        $node .= "<li><a href='$link'>{$category->name}</a>";
-        $node .= ' <a href="' . Url::to(['menu/update', 'id' => $category->id]) . '"><span class="glyphicon glyphicon-pencil"></span></a>';
-        $node .= ' <a href="' . Url::to(['menu/delete', 'id' => $category->id]) . '"><span class="glyphicon glyphicon-remove"></span></a>';
-        $node .= ' <a href="' . Url::to(['menu/create', 'parent_id' => $category->id]) . '"><span class="glyphicon glyphicon-plus"></span></a>';
-        if ($category->categories) {
+        $link = urlencode($category['link']);
+        $node .= "<li><a href='$link'>{$category['name']}</a>";
+        $node .= ' <a href="' . Url::to(['menu/update', 'id' => $category['id']]) . '"><span class="glyphicon glyphicon-pencil"></span></a>';
+        $node .= ' <a href="' . Url::to(['menu/delete', 'id' => $category['id']]) . '"><span class="glyphicon glyphicon-remove"></span></a>';
+        $node .= ' <a href="' . Url::to(['menu/create', 'parent_id' => $category['id']]) . '"><span class="glyphicon glyphicon-plus"></span></a>';
+        if ($category['categories']) {
             $node .= '<ul>';
-            $node .= tree($category->categories);
+            $node .= tree($category['categories']);
             $node .= '</ul>';
         }
         $node .= '</li>';
