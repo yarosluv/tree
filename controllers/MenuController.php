@@ -18,9 +18,10 @@ class MenuController extends \yii\web\Controller
 
     public function actionRead()
     {
+        $tree = Category::getTree();
 
         return $this->render('read', [
-                    'categories' => Category::findAll(['parent_id' => null])
+                    'categories' => $tree
         ]);
     }
 

@@ -70,4 +70,38 @@ class Category extends \yii\db\ActiveRecord
         return $this->hasMany(Category::className(), ['parent_id' => 'id']);
     }
 
+    public static function getTree()
+    {
+        $tree = [];
+        $categories = [];
+        $rootCategories = [];
+        foreach (self::find()->asArray()->all() as $cat) {
+            if (is_null($cat['parent_id'])) {
+                $rootCategories[] = $cat;
+            } else {
+                $categories[] = $cat;
+            }
+        }
+
+        foreach ($rootCategories as $category) {
+            $category['categories'] = self::setChildNode($category['id'], $categories);
+            $tree[] = $category;
+        }
+
+        return $tree;
+    }
+
+    private static function setChildNode($parentId, array $categories): array
+    {
+        $children = [];
+        foreach ($categories as $category) {
+            if ($category['parent_id'] == $parentId) {
+                $category['categories'] = self::setChildNode($category['id'], $categories);
+                $children[] = $category;
+            }
+        }
+
+        return $children;
+    }
+
 }
